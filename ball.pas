@@ -1,8 +1,4 @@
  
-(*
-  http://corpsman.de/index.php?doc=beispiele/pingpong
-*)
- 
 unit ball;
  
 interface
@@ -80,18 +76,31 @@ begin
   FSX := AValue.x;
   FSY := AValue.y;
 end;
- 
+
+{$DEFINE PHONGSHADING}
 procedure TBall.MakeBitmap;
+{$IFDEF PHONGSHADING}
 var
   LMap: TBGRABitmap;
   LPhong: TPhongShading;
+{$ENDIF}
 begin
-  LMap := CreateSpherePreciseMap(Round(FRadius * 2), Round(FRadius * 2));
   FImage := TBGRABitmap.Create(Round(FRadius * 2), Round(FRadius * 2));
+{$IFDEF PHONGSHADING}
+  LMap := CreateSpherePreciseMap(Round(FRadius * 2), Round(FRadius * 2));
   LPhong := TPhongShading.Create;
   LPhong.Draw(FImage, LMap, Round(FRadius), 0, 0, BGRA(0, 0, 255, 255));
   LPhong.Free;
   LMap.Free;
+{$ELSE}
+  FImage.FillEllipseAntialias(
+    FImage.Width  / 2 - 0.5,
+    FImage.Height / 2 - 0.5,
+    FRadius - 0.5,
+    FRadius - 0.5,
+    BGRA(0, 0, 255, 255)
+  );
+{$ENDIF}
 end;
  
 procedure TBall.Move;

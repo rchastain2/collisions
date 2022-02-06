@@ -1,8 +1,4 @@
 
-(*
-  http://corpsman.de/index.php?doc=beispiele/pingpong
-*)
-
 unit main;
 
 {$MODE OBJFPC}{$H+}
@@ -17,11 +13,12 @@ uses
 type
   { TForm1 }
   TForm1 = class(TForm)
-    AppPro: TApplicationProperties;
-    procedure AppProIdle(Sender: TObject; var Done: Boolean);
+    AP: TApplicationProperties;
+    procedure APIdle(Sender: TObject; var Done: boolean);
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormCreate(Sender: TObject);
-    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure FormKeyDown(Sender: TObject; var Key: word; Shift: TShiftState);
+    procedure FormPaint(Sender: TObject);
   private
     { private declarations }
   public
@@ -31,8 +28,9 @@ type
 var
   Form1: TForm1;
   Balls: array of TBall;
-  Initialized: Boolean = FALSE;
+  Initialized: boolean = False;
   FormBitmap: TBGRABitmap;
+  WaitingForDisplay: boolean = False;
 
 implementation
 
@@ -40,44 +38,45 @@ implementation
 
 procedure Render;
 var
-  i, j: Integer;
+  i, j: integer;
 begin
   if not Initialized then
     Exit;
 
   FormBitmap.Fill(BGRABlack);
-  
+
   for i := 0 to High(Balls) do
     Balls[i].Render(FormBitmap);
-  
-  FormBitmap.Draw(Form1.Canvas, 0, 0, True);
-  
+
+  Form1.Invalidate;
+  WaitingForDisplay := True;
+
   for i := 0 to High(Balls) do
     Balls[i].Move;
-  
+
   for i := 0 to High(Balls) do
     for j := i + 1 to High(Balls) do
-      begin
-        Balls[i].Collide(Balls[j]);
-      end;
-  
+      Balls[i].Collide(Balls[j]);
+
   for i := 0 to High(Balls) do
     Balls[i].BorderCollision(Form1.ClientRect);
 end;
 
 { TForm1 }
 
-procedure TForm1.AppProIdle(Sender: TObject; var Done: Boolean);
+procedure TForm1.APIdle(Sender: TObject; var Done: boolean);
 begin
+  if WaitingForDisplay then
+    Exit;
   Render;
-  Done := FALSE;
+  Done := False;
 end;
 
 procedure TForm1.FormClose(Sender: TObject; var CloseAction: TCloseAction);
 var
-  i: Integer;
+  i: integer;
 begin
-  Initialized := FALSE;
+  Initialized := False;
   for i := 0 to High(Balls) do
     Balls[i].Free;
   FormBitmap.Free;
@@ -85,7 +84,7 @@ end;
 
 procedure TForm1.FormCreate(Sender: TObject);
 var
-  i, w, h: Integer;
+  i, w, h: integer;
 begin
   BorderStyle := bsNone;
 
@@ -119,12 +118,18 @@ begin
 
   Balls[0].Speed := PointF(Cos((-45) * PI / 180) * 4, Sin(-45 * PI / 180) * 4);
 
-  Initialized := TRUE;
+  Initialized := True;
 end;
 
-procedure TForm1.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+procedure TForm1.FormKeyDown(Sender: TObject; var Key: word; Shift: TShiftState);
 begin
   Close;
+end;
+
+procedure TForm1.FormPaint(Sender: TObject);
+begin
+  FormBitmap.Draw(Canvas, 0, 0, True);
+  WaitingForDisplay := False;
 end;
 
 end.

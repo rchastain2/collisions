@@ -6,7 +6,7 @@
     <General>
       <SessionStorage Value="InProjectDir"/>
       <MainUnit Value="0"/>
-      <Title Value="collisions"/>
+      <Title Value="bouncingballs"/>
       <ResourceType Value="res"/>
       <UseXPManifest Value="True"/>
       <Icon Value="0"/>
@@ -36,7 +36,7 @@
     </RequiredPackages>
     <Units Count="3">
       <Unit0>
-        <Filename Value="collisions.lpr"/>
+        <Filename Value="bouncingballs.lpr"/>
         <IsPartOfProject Value="True"/>
       </Unit0>
       <Unit1>
@@ -56,7 +56,7 @@
     <Version Value="11"/>
     <PathDelim Value="\"/>
     <Target>
-      <Filename Value="collisions"/>
+      <Filename Value="bouncingballs"/>
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>

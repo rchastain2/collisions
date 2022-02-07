@@ -9,8 +9,8 @@ object Form1: TForm1
   OnKeyDown = FormKeyDown
   OnPaint = FormPaint
   LCLVersion = '2.0.10.0'
-  object AP: TApplicationProperties
-    OnIdle = APIdle
+  object Prop: TApplicationProperties
+    OnIdle = PropIdle
     Left = 56
     Top = 16
   end

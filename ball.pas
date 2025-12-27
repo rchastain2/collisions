@@ -33,7 +33,88 @@ type
 implementation
  
 uses
-  BGRAGradients, Geometry;
+  BGRAGradients, Geometry, Math;
+
+(* ========================================================================== *)
+
+{ https://forum.lazarus.freepascal.org/index.php/topic,54207.msg572994.html#msg572994 }
+
+function BrightColor: TBGRAPixel;
+begin
+  Result := BGRA(180 + Random(76), 180 + Random(76), 180 + Random(76), 255);
+end;
+ 
+function VividColor: TBGRAPixel;
+var
+  r, g, b: Byte;
+  idx: Integer;
+begin
+  r := Random(256);
+  g := Random(256);
+  b := Random(256);
+ 
+  idx := Random(3);
+  case idx of
+    0: r := 255;
+    1: g := 255;
+    2: b := 255;
+  end;
+ 
+  Result := BGRA(r, g, b, 255);
+end;
+ 
+function HSVtoBGRA(H, S, V: Single): TBGRAPixel;
+var
+  c, x, m: Single;
+  r, g, b: Single;
+  hi: Integer;
+begin
+  c := V * S;
+  hi := Floor(H / 60) mod 6;
+  x := c * (1 - Abs((H / 60) mod 2 - 1));
+ 
+  case hi of
+    0:
+      begin
+        r := c; g := x; b := 0;
+      end;
+    1:
+      begin
+        r := x; g := c; b := 0;
+      end;
+    2:
+      begin
+        r := 0; g := c; b := x;
+      end;
+    3:
+      begin
+        r := 0; g := x; b := c;
+      end;
+    4:
+      begin
+        r := x; g := 0; b := c;
+      end;
+    5:
+      begin
+        r := c; g := 0; b := x;
+      end;
+  end;
+ 
+  m := V - c;
+  Result := BGRA(
+    Round((r + m) * 255),
+    Round((g + m) * 255),
+    Round((b + m) * 255),
+    255
+  );
+end;
+ 
+function BrightRainbowColor: TBGRAPixel;
+begin
+  Result := HSVtoBGRA(Random(360), 1.0, 1.0);
+end;
+
+(* ========================================================================== *)
 
 constructor TBall.Create(const APos, ASpeed: TPointF; const ARadius, AMass: single);
 begin
@@ -89,7 +170,10 @@ begin
 {$IFDEF PHONGSHADING}
   LMap := CreateSpherePreciseMap(Round(FRadius * 2), Round(FRadius * 2));
   LPhong := TPhongShading.Create;
-  LPhong.Draw(FImage, LMap, Round(FRadius), 0, 0, BGRA(0, 0, 255, 255));
+  //LPhong.Draw(FImage, LMap, Round(FRadius), 0, 0, BGRA(0, 0, 255, 255));
+  //LPhong.Draw(FImage, LMap, Round(FRadius), 0, 0, BrightColor);
+  //LPhong.Draw(FImage, LMap, Round(FRadius), 0, 0, BrightRainbowColor);
+  LPhong.Draw(FImage, LMap, Round(FRadius), 0, 0, VividColor);
   LPhong.Free;
   LMap.Free;
 {$ELSE}

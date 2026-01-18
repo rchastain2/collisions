@@ -18,5 +18,5 @@ Contribution by [Boleeman](https://forum.lazarus.freepascal.org/index.php?action
 
 ## Links
 
-- [Delphi bouncing balls](https://github.com/PascalCorpsman/mini_projects/tree/main/miniprojects/PingPong) by Corpsman (GitHub)
+- [Lazarus bouncing balls](https://github.com/PascalCorpsman/mini_projects/tree/main/miniprojects/PingPong) by Corpsman
 - [Other version using Cairo](https://github.com/rchastain2/cairo-examples/tree/main/pascal/luipack/bouncingballs)

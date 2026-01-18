@@ -1,7 +1,7 @@
 
 # Collisions
 
-Delphi bouncing balls by [Corpsman](http://corpsman.de/index.php?doc=beispiele/pingpong), ported to Lazarus and BGRABitmap.
+[Delphi bouncing balls](https://corpsman.de/index.php?doc=beispiele/pingpong) by Corpsman, ported to Lazarus and BGRABitmap.
 
 ![screenshot](screenshot/collisions.png)
 
@@ -16,6 +16,7 @@ Contribution by [Boleeman](https://forum.lazarus.freepascal.org/index.php?action
 
 - [Colors](https://forum.lazarus.freepascal.org/index.php/topic,54207.msg572994.html#msg572994)
 
-## See also
+## Links
 
+- [Delphi bouncing balls](https://github.com/PascalCorpsman/mini_projects/tree/main/miniprojects/PingPong) by Corpsman (GitHub)
 - [Other version using Cairo](https://github.com/rchastain2/cairo-examples/tree/main/pascal/luipack/bouncingballs)
